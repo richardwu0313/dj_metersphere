@@ -3,7 +3,7 @@ from rest_framework.serializers import Serializer
 from rest_framework import fields
 
 
-class FvrTestCaseSerializer(Serializer):
+class TestCaseSerializer(Serializer):
     project_name = SerializerMethodField()
     project_id = fields.CharField()
     count = fields.IntegerField()

@@ -4,15 +4,15 @@ from typing import List
 from django.db.models import Count
 from django.db.models import Q
 
-from fvr_metersphere.models.metersphere import Project
-from fvr_metersphere.models.metersphere import TestCase
-from fvr_metersphere.models.metersphere import Workspace
-from fvr_metersphere.models.metersphere import TestCaseNode
-from fvr_metersphere.models.metersphere import CustomField
-from fvr_metersphere.models.metersphere import CustomFieldTestCase
+from dj_metersphere.models.metersphere import Project
+from dj_metersphere.models.metersphere import TestCase
+from dj_metersphere.models.metersphere import Workspace
+from dj_metersphere.models.metersphere import TestCaseNode
+from dj_metersphere.models.metersphere import CustomField
+from dj_metersphere.models.metersphere import CustomFieldTestCase
 
 
-class FvrTestCaseUtil:
+class TestCaseUtil:
 
     @staticmethod
     def get_execution_time_dict(project_id: str) -> Dict:
@@ -78,7 +78,7 @@ class FvrTestCaseUtil:
         result = {}
         for prj_id in prj_id_dict:
             result[prj_id_dict[prj_id]] = 0
-            execution_time_dict = FvrTestCaseUtil.get_execution_time_dict(prj_id)
+            execution_time_dict = TestCaseUtil.get_execution_time_dict(prj_id)
             if execution_time_dict:
                 tcs = TestCase.objects.filter(project_id=prj_id).filter(q)
                 for tc in tcs:
@@ -88,9 +88,9 @@ class FvrTestCaseUtil:
     @staticmethod
     def get_automation_status_active(project_id: str) -> Dict:
         assert project_id is not None, "project_id is None"
-        tc_count = FvrTestCaseUtil.get_test_case(project_id).count()
-        tc_automatable_count = FvrTestCaseUtil.get_test_case(project_id).filter(tags__icontains="automatable").count()
-        tc_automated_count = FvrTestCaseUtil.get_test_case(project_id).filter(tags__icontains="automated").count()
+        tc_count = TestCaseUtil.get_test_case(project_id).count()
+        tc_automatable_count = TestCaseUtil.get_test_case(project_id).filter(tags__icontains="automatable").count()
+        tc_automated_count = TestCaseUtil.get_test_case(project_id).filter(tags__icontains="automated").count()
         result = {
             "total": tc_count,
             "automatable": tc_automatable_count,
@@ -102,7 +102,7 @@ class FvrTestCaseUtil:
     @staticmethod
     def get_automation_status_detail_active(project_id: str) -> List:
         assert project_id is not None, "project_id is None"
-        execution_time_dict = FvrTestCaseUtil.get_execution_time_dict(project_id)
+        execution_time_dict = TestCaseUtil.get_execution_time_dict(project_id)
         tcn_q = Q()
         tcn_q.connector = "AND"
         tcn_q.children.append(Q(level=1))
@@ -170,14 +170,14 @@ class FvrTestCaseUtil:
                 }
 
             return children
-        from fvr_metersphere.utils.fvr_project_util import FvrProjectUtil
+        from dj_metersphere.utils.project_util import ProjectUtil
         q = Q()
         q.connector = "AND"
         q.children.append(~Q(name__icontains="未规划用例"))
         q.children.append(Q(project_id=project_id))
         tree = {}
         level = 1
-        project_name = FvrProjectUtil.get_project_name_by_id(project_id)
+        project_name = ProjectUtil.get_project_name_by_id(project_id)
         tree["name"] = project_name
         tree["children"] = []
         for node in TestCaseNode.objects.filter(q).filter(level=level):
@@ -189,14 +189,14 @@ class FvrTestCaseUtil:
 
     @staticmethod
     def get_test_case_priority_dict(project_id: str) -> Dict:
-        testcases = FvrTestCaseUtil.get_test_case(project_id)
+        testcases = TestCaseUtil.get_test_case(project_id)
         result = testcases.values("priority").annotate(count=Count("id"))
         return result
 
     @staticmethod
     def get_test_case_priority_time_dict(project_id: str) -> Dict:
-        testcases = FvrTestCaseUtil.get_test_case(project_id)
-        execution_time_dict = FvrTestCaseUtil.get_execution_time_dict(project_id)
+        testcases = TestCaseUtil.get_test_case(project_id)
+        execution_time_dict = TestCaseUtil.get_execution_time_dict(project_id)
         result = {}
         for item in testcases:
             if item.priority not in result:

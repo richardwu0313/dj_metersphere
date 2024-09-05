@@ -2,16 +2,16 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 
-from fvr_metersphere.serializers.fvr_workspace import FvrWorkspaceSerializer
-from fvr_metersphere.utils.fvr_workspace_util import FvrWorkspaceUtil
+from dj_metersphere.serializers.workspace import WorkspaceSerializer
+from dj_metersphere.utils.workspace_util import WorkspaceUtil
 
 
-class FvrWorkspaceViewSet(ModelViewSet):
+class WorkspaceViewSet(ModelViewSet):
     # workspace
-    queryset = FvrWorkspaceUtil.get_workspaces()
-    serializer_class = FvrWorkspaceSerializer
+    queryset = WorkspaceUtil.get_workspaces()
+    serializer_class = WorkspaceSerializer
 
     @action(detail=False, methods=["get"], url_path="short")
     def short_workspaces(self, request):
-        result = FvrWorkspaceUtil.get_short_workspaces()
+        result = WorkspaceUtil.get_short_workspaces()
         return Response(result)

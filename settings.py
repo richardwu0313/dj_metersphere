@@ -3,21 +3,22 @@ from pathlib import Path
 
 INSTALLED_APPS = [
     "django.contrib.staticfiles",
+    "drf_yasg",
     "rest_framework",
-    "fvr_metersphere",
+    "dj_metersphere",
     "django_filters"
 ]
 
 BASE_DIR = Path(__file__).resolve().parent
 ALLOWED_HOSTS = ["*"]
-ROOT_URLCONF = "fvr_metersphere.urls"
+ROOT_URLCONF = "dj_metersphere.urls"
 SECRET_KEY = "1234567890poiuytrewq"
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            os.path.join(BASE_DIR, "fvr_metersphere/templates"),
+            os.path.join(BASE_DIR, "dj_metersphere/templates"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -31,7 +32,7 @@ TEMPLATES = [
     },
 ]
 STATIC_URL = "/static/"
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "fvr_metersphere/static"),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "dj_metersphere/static"),)
 
 DATABASES = {
     "default": {
@@ -45,23 +46,6 @@ DATABASES = {
             "init_command": "SET foreign_key_checks = 0;",
         },
     },
-}
-
-DATABASE_APPS_MAPPING = {
-    # app_label : database_name
-    "sessions": "default",
-    "auth": "default",
-    "contenttypes": "default",
-    "fvr_metersphere": "default",
-}
-
-DATABASE_ROUTERS = ["fvr_metersphere.fvr_db_router.FvrDBRouter"]
-
-RABBITMQ_SERVER = os.getenv("RABBITMQ_SERVER", "qa-rabbitmq")
-RABBITMQ_USER = os.getenv("RABBITMQ_USER", "flexiv")
-RABBITMQ_PASSWORD = os.getenv("RABBITMQ_PASSWORD", "cicd2018")
-NAMEKO_CONFIG = {
-    "AMQP_URI": "pyamqp://{}:{}@{}".format(RABBITMQ_USER, RABBITMQ_PASSWORD, RABBITMQ_SERVER)
 }
 
 # celery setting for "MySQL backend does not support timezone-aware datetimes when USE_TZ is False" error.

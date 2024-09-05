@@ -1,7 +1,7 @@
-from fvr_metersphere.models.metersphere import Workspace
+from dj_metersphere.models.metersphere import Workspace
 
 
-class FvrWorkspaceUtil:
+class WorkspaceUtil:
 
     @staticmethod
     def get_workspaces():

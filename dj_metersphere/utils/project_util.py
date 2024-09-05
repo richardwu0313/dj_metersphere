@@ -1,9 +1,9 @@
 from typing import Dict
 
-from fvr_metersphere.models.metersphere import Project
+from dj_metersphere.models.metersphere import Project
 
 
-class FvrProjectUtil:
+class ProjectUtil:
 
     @staticmethod
     def get_projects(workspace_id: str):
@@ -18,11 +18,11 @@ class FvrProjectUtil:
 
     @staticmethod
     def get_short_projects(workspace_id: str):
-        return FvrProjectUtil.get_projects(workspace_id).values("name", "id")
+        return ProjectUtil.get_projects(workspace_id).values("name", "id")
 
     @staticmethod
     def get_short_projects_dict(workspace_id: str) -> Dict[str, str]:
-        short_projects = FvrProjectUtil.get_short_projects(workspace_id)
+        short_projects = ProjectUtil.get_short_projects(workspace_id)
         result = {}
         for item in short_projects:
             result[item["id"]] = item["name"]

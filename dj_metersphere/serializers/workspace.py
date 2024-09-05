@@ -1,9 +1,9 @@
 from rest_framework.serializers import ModelSerializer
 
-from fvr_metersphere.models.metersphere import Workspace
+from dj_metersphere.models.metersphere import Workspace
 
 
-class FvrWorkspaceSerializer(ModelSerializer):
+class WorkspaceSerializer(ModelSerializer):
 
     class Meta:
         model = Workspace

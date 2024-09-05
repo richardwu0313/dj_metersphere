@@ -4,10 +4,10 @@ from datetime import datetime
 from datetime import timedelta
 from django.db.models import Q
 
-from fvr_metersphere.models.metersphere import TestPlanTestCase
+from dj_metersphere.models.metersphere import TestPlanTestCase
 
 
-class FvrTestplanTestcaseUtil:
+class TestplanTestcaseUtil:
 
     @staticmethod
     def get_assignment_summary(testplan_id: str):
@@ -48,7 +48,10 @@ class FvrTestplanTestcaseUtil:
     @staticmethod
     def get_execution_detail_summary(testplan_id: str):
         statuses = ["Prepare", "Pass", "Failure", "Blocking", "Skip"]
-        executors = TestPlanTestCase.objects.filter(plan_id=testplan_id).values_list("executor", flat=True).distinct()
+        executors = (TestPlanTestCase.objects.
+                     filter(plan_id=testplan_id).
+                     values_list("executor", flat=True).
+                     distinct())
         results = {}
         for per in executors:
             result = TestPlanTestCase.objects.filter(executor=per, plan_id=testplan_id).\
@@ -67,8 +70,8 @@ class FvrTestplanTestcaseUtil:
 
     @staticmethod
     def get_daily_execution_summary(testplan_id: str, executor: str = ""):
-        from fvr_metersphere.utils.fvr_test_plan_util import FvrTestPlanUtil
-        tp_obj = FvrTestPlanUtil.get_test_plan_by_id(testplan_id)
+        from dj_metersphere.utils.test_plan_util import TestPlanUtil
+        tp_obj = TestPlanUtil.get_test_plan_by_id(testplan_id)
         tp_start_date = datetime.utcfromtimestamp(tp_obj.actual_start_time / 1000).date()
         if tp_obj.actual_end_time:
             tp_end_date = datetime.utcfromtimestamp(tp_obj.actual_end_time / 1000).date()
@@ -101,6 +104,6 @@ class FvrTestplanTestcaseUtil:
         executors = TestPlanTestCase.objects.filter(plan_id=testplan_id).values_list("executor", flat=True).distinct()
         results = {}
         for per in executors:
-            result = FvrTestplanTestcaseUtil.get_daily_execution_summary(testplan_id, per)
+            result = TestplanTestcaseUtil.get_daily_execution_summary(testplan_id, per)
             results[per] = result
         return results

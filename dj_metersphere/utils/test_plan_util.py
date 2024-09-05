@@ -1,10 +1,9 @@
 from django.db.models import Q
-from django.db.models import Count
 
-from fvr_metersphere.models.metersphere import TestPlan
+from dj_metersphere.models.metersphere import TestPlan
 
 
-class FvrTestPlanUtil:
+class TestPlanUtil:
 
     @staticmethod
     def get_test_plans():

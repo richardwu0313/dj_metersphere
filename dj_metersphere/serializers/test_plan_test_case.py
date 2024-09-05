@@ -2,10 +2,10 @@ from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 from datetime import datetime
 
-from fvr_metersphere.models.metersphere import TestPlanTestCase
+from dj_metersphere.models.metersphere import TestPlanTestCase
 
 
-class FvrTestplanTestcaseSerializer(ModelSerializer):
+class TestplanTestcaseSerializer(ModelSerializer):
     create_time_str = serializers.SerializerMethodField()
     update_time_str = serializers.SerializerMethodField()
 

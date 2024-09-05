@@ -1,9 +1,9 @@
 from rest_framework.serializers import ModelSerializer
 
-from fvr_metersphere.models.metersphere import Project
+from dj_metersphere.models.metersphere import Project
 
 
-class FvrProjectSerializer(ModelSerializer):
+class ProjectSerializer(ModelSerializer):
 
     class Meta:
         model = Project
